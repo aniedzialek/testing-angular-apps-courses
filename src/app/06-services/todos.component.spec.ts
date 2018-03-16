@@ -2,6 +2,8 @@ import { TodosComponent } from './todos.component';
 import { TodoService } from './todo.service';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/from';
+import 'rxjs/add/observable/empty';
+import 'rxjs/add/observable/throw';
 
 describe('TodosComponent', () => {
   let component: TodosComponent;
@@ -30,5 +32,44 @@ describe('TodosComponent', () => {
     component.ngOnInit();
 
     expect(component.todos).toBe(todos);
+  });
+
+  it('calls server to save the changes when new item is added', () => {
+    const spy = spyOn(service, 'add').and.callFake(t => {
+      return Observable.empty();
+    });
+
+    component.add();
+
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('adds new todo returned from the server', () => {
+    const todo = {id: 1};
+    const spy = spyOn(service, 'add').and.callFake(t => {
+      return Observable.from([ todo ]);
+    });
+
+    component.add();
+
+    expect(component.todos.indexOf(todo)).toBeGreaterThan(-1);
+  });
+
+  it('adds new todo returned from the server (second version)', () => {
+    const todo = {id: 1};
+    const spy = spyOn(service, 'add').and.returnValue(Observable.from([ todo ]));
+
+    component.add();
+
+    expect(component.todos.indexOf(todo)).toBeGreaterThan(-1);
+  })
+
+  it('sets the message property if server returns error when adding new todo', () => {
+    const error = 'Error from the server';
+    const spy = spyOn(service, 'add').and.returnValue(Observable.throw(error));
+
+    component.add();
+
+    expect(component.message).toBe(error);
   });
 });
