@@ -1,12 +1,14 @@
 
-export class VoteComponent { 
-  totalVotes = 0; 
+// State change pattern - the methods modify the state of the component
 
-  upVote() { 
+export class VoteComponent {
+  totalVotes = 0;
+
+  upVote() {
     this.totalVotes++;
   }
 
-  downVote() { 
+  downVote() {
     this.totalVotes--;
   }
 }
