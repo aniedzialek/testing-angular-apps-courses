@@ -72,4 +72,24 @@ describe('TodosComponent', () => {
 
     expect(component.message).toBe(error);
   });
+
+  it('calls the server to delete todo item if the user confirms', () => {
+    spyOn(window, 'confirm').and.returnValue(true);
+    const deleteSpy = spyOn(service, 'delete').and.returnValue(Observable.empty());
+
+    const id = 1;
+    component.delete(id);
+
+    expect(deleteSpy).toHaveBeenCalledWith(id);
+  });
+
+  it('does NOT call the server to delete todo item if the user confirms', () => {
+    spyOn(window, 'confirm').and.returnValue(false);
+    const deleteSpy = spyOn(service, 'delete').and.returnValue(Observable.empty());
+
+    const id = 1;
+    component.delete(id);
+
+    expect(deleteSpy).not.toHaveBeenCalledWith();
+  });
 });
