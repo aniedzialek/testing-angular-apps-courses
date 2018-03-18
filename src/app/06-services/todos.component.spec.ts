@@ -90,6 +90,6 @@ describe('TodosComponent', () => {
     const id = 1;
     component.delete(id);
 
-    expect(deleteSpy).not.toHaveBeenCalledWith();
+    expect(deleteSpy).not.toHaveBeenCalled();
   });
 });
