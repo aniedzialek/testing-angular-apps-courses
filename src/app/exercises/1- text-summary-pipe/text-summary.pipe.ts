@@ -4,11 +4,11 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'textSummary'
 })
 export class TextSummaryPipe implements PipeTransform {
-  transform(value: any, args?: any): any {
+  transform(value: string, args?: number): any {
     if (!value)
-      return '';  
+      return '';
 
-    const limit = args || 10; 
+    const limit = args || 10;
     return (value.length <= limit) ? value : value.substr(0, limit) + '...';
   }
 }
